@@ -1,8 +1,8 @@
 {
-  "name": "pomodoro-clock",
+  "name": "drum-machine",
   "version": "0.1.0",
   "author": "Afroz Mohammad",
-  "homepage": "http://zkindest.github.io/pomodoro",
+  "homepage": "http://zkindest.github.io/",
   "description": "A Simple Javascript Drum Machine",
   "private": true,
   "dependencies": {
