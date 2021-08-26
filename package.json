@@ -2,7 +2,7 @@
   "name": "drum-machine",
   "version": "0.1.0",
   "author": "Afroz Mohammad",
-  "homepage": "http://zkindest.github.io/",
+  "homepage": "http://zkindest.github.io/drum-machine",
   "description": "A Simple Javascript Drum Machine",
   "private": true,
   "dependencies": {
