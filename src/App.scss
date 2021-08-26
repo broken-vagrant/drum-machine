@@ -181,6 +181,10 @@ fieldset {
   display: flex;
   flex-flow: row wrap;
   width: 768px;
+  @media all and (max-width: 1024px) {
+    width: 100%;
+    flex-direction: column;
+  }
   .drums {
     flex-basis: 50%;
     align-self: center;
@@ -190,10 +194,16 @@ fieldset {
     flex-direction: column;
     align-items: center;
     flex-basis: 50%;
+    @media all and (max-width: 1024px) {
+      margin-top: 1rem;
+    }
   }
 }
 .drum-controls {
   > * + * {
     margin-top: 0.5rem;
   }
+}
+.text-center {
+  text-align: center;
 }

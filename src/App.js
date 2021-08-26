@@ -46,41 +46,47 @@ const App = () => {
   const powerOptions = ["Off", "On"];
 
   return (
-    <div id="drum-machine" className="drum-machine">
-      <div className="drums">
-        <Drums
-          updateDisplay={updateDisplay}
-          bank={bank}
-          isPowered={isPowered}
-          volumeLevel={volumeLevel}
-        />
+    <>
+      <h2 className="text-center">Drum Machina</h2>
+      <div id="drum-machine" className="drum-machine">
+        <div className="drums">
+          <Drums
+            updateDisplay={updateDisplay}
+            bank={bank}
+            isPowered={isPowered}
+            volumeLevel={volumeLevel}
+          />
+        </div>
+        <div className="drum-controls">
+          <Toggler
+            name="power"
+            title="Power"
+            options={powerOptions}
+            value={power.selected}
+            onChange={powerControl}
+          />
+          <Display value={displayVal} />
+          <RangeSlider
+            name="volume"
+            title="Volume"
+            value={volumeLevel}
+            onChange={handleVolumeChange}
+            disabled={!isPowered}
+          />
+          <Toggler
+            options={bankOptions}
+            value={bank.selected}
+            name="bank"
+            title="Bank"
+            onChange={handleBankChange}
+            disabled={!isPowered}
+          />
+        </div>
       </div>
-      <div className="drum-controls">
-        <Toggler
-          name="power"
-          title="Power"
-          options={powerOptions}
-          value={power.selected}
-          onChange={powerControl}
-        />
-        <Display value={displayVal} />
-        <RangeSlider
-          name="volume"
-          title="Volume"
-          value={volumeLevel}
-          onChange={handleVolumeChange}
-          disabled={!isPowered}
-        />
-        <Toggler
-          options={bankOptions}
-          value={bank.selected}
-          name="bank"
-          title="Bank"
-          onChange={handleBankChange}
-          disabled={!isPowered}
-        />
-      </div>
-    </div>
+      <footer className="text-center">
+        <h6>developed by Afroz Mohammad</h6>
+      </footer>
+    </>
   );
 };
 
