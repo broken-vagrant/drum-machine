@@ -1,4 +1,7 @@
+import { generateId } from "./utils";
+
 const RangeSlider = (inputProps) => {
+  const id = generateId(inputProps.name);
   return (
     <div className="range-slider">
       <input
@@ -6,7 +9,7 @@ const RangeSlider = (inputProps) => {
         min="0"
         max="1"
         step=".01"
-        id={`${inputProps.name}__slider`}
+        id={`${id}__slider`}
         {...inputProps}
       />
     </div>

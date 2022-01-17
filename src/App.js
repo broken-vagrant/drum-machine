@@ -5,6 +5,9 @@ import Toggler from "./Components/Toggler";
 import Display from "./Components/Display";
 import Drums from "./Components/Drums";
 
+const bankOptions = ["One", "Two"];
+const powerOptions = ["Off", "On"];
+
 const App = () => {
   const [displayVal, setDisplayVal] = React.useState("Play");
   const updateDisplay = (value) => {
@@ -42,8 +45,6 @@ const App = () => {
       updateDisplay("");
     }, 1000);
   };
-  const bankOptions = ["One", "Two"];
-  const powerOptions = ["Off", "On"];
 
   return (
     <>
