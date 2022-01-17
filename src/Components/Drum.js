@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import { Loading } from "../Icons";
 
 const Drum = ({
   isPowered,
@@ -9,33 +10,32 @@ const Drum = ({
   updateDisplay,
   volumeLevel,
 }) => {
-  const thisRef = React.useRef();
+  const audioRef = useRef();
+  const [canPlay, setCanPlay] = useState(false);
 
   // update volume level if props.volumeLevel changes
-  React.useEffect(() => {
-    if (thisRef.current) {
-      thisRef.current.volume = volumeLevel;
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volumeLevel;
     }
   }, [volumeLevel]);
 
-  // I have to pass playSounc as dependency to handleKeyDown useEffect
-  // playSound will get newly created if updateDisplay,thisRef,id changes
-  const playSound = React.useCallback(() => {
-    if (thisRef.current) {
-      let thisAudioEl = thisRef.current;
+  const playSound = useCallback(() => {
+    if (audioRef.current) {
+      let thisAudioEl = audioRef.current;
       thisAudioEl.currentTime = 0;
       thisAudioEl.play();
       updateDisplay(id.replace(/-/g, " "));
     }
-  }, [thisRef, id, updateDisplay]);
+  }, [audioRef, id, updateDisplay]);
 
-  React.useEffect(() => {
-    // do below only if it's dependencies changes
+  useEffect(() => {
+    // handle key presses
     const handleKeyDown = (e) => {
       if (isPowered) {
         if (e.keyCode === keyCode) {
           playSound();
-          highLightActiveDrum(thisRef.current.parentNode);
+          highLightActiveDrum(audioRef.current.parentNode);
         }
       }
     };
@@ -44,7 +44,7 @@ const Drum = ({
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isPowered]);
+  }, []);
 
   const highLightActiveDrum = (target) => {
     target.classList.add("active");
@@ -54,15 +54,42 @@ const Drum = ({
   };
   const handleClick = (e) => {
     if (isPowered) {
-      let clickedButton = e.target;
       playSound();
-      highLightActiveDrum(clickedButton);
+      highLightActiveDrum(e.target);
     }
   };
+  useEffect(() => {
+    // handle audio load
+    const handleAudioLoad = () => {
+      setCanPlay(true);
+    }
+    if (audioRef.current) {
+      audioRef.current.addEventListener('loadeddata', handleAudioLoad);
+    }
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.removeEventListener('loadeddata', handleAudioLoad);
+      }
+    }
+  }, [audioRef])
+
+  useEffect(() => {
+    // if audio load unsuccessful and user toggles power switch
+    // load the audio again if power on
+    if (isPowered) {
+      if (audioRef.current && !canPlay) audioRef.current.load();
+    }
+  }, [isPowered])
+
+  let isDisabled = !isPowered || !canPlay;
+  let title = isPowered ? canPlay ? keyTrigger : 'Loading audio...' : keyTrigger;
+
   return (
-    <button type="button" className="drum-pad" id={id} onClick={handleClick}>
-      <audio className="clip" id={keyTrigger} src={url} ref={thisRef}></audio>
-      {keyTrigger}
+    <button type="button" className="drum-pad" id={id} onClick={handleClick} disabled={isDisabled} title={title}>
+      <audio className="clip" id={keyTrigger} src={url} ref={audioRef}></audio>
+      {
+        isPowered && !canPlay ? (<Loading style={{ width: '100%', height: '100%', color: 'white' }} />) : keyTrigger
+      }
     </button>
   );
 };

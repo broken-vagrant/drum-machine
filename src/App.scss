@@ -178,6 +178,10 @@ fieldset {
     background-color: orange;
     box-shadow: 3px 3px 5px orange;
   }
+  button:disabled {
+    box-shadow: none;
+    background-color: lightgray;
+  }
 }
 .drum-machine {
   display: flex;
